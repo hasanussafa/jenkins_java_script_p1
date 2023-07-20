@@ -16,13 +16,13 @@ pipeline {
     }
     environment {
         echo 'Hello World'
-        DOCKERHUB_CREDENTIALS = credentials('jenkins_first_image')
+        DOCKERHUB_CREDENTIALS = credentials('jenkins_java_script_p1')
         echo 'Hello environment'
     }
     stages {
         satge('Build') {
             steps {
-                sh 'docker build -t hasanussafa/jenkins_first_image:latest .'
+                sh 'docker build -t hasanussafa/jenkins_java_script_p1:latest .'
                 echo 'Hello Build'
             }
         }
@@ -35,7 +35,7 @@ pipeline {
        
         satge('Push') {
             steps {
-                sh 'docker push hasanussafa/jenkins_first_image:latest'
+                sh 'docker push hasanussafa/jenkins_java_script_p1:latest'
                 echo 'Hello Push'
             }
         }
