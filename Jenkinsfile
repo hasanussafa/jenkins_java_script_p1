@@ -1,49 +1,50 @@
 pipeline {
     /*agent { label 'linux'}*/
     agent any
+
+    environment {
+       
+        DOCKERHUB_CREDENTIALS = credentials('jenkins_java_script_p1')
+       
+    }
     
     stages {
-        stage('Hello') {
+        
+        stage('gitclone') {
             steps {
-                echo 'Hello World for testing'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/hasanussafa/jenkins_java_script_p1.git']])
+            
+            
+                
             }
         }
-    }
-
-    options{
-        buildDiscarder(logRotator(numToKeepStr: '$'))
-        echo "Options function worked"
-    }
-    environment {
-        echo 'Hello World'
-        DOCKERHUB_CREDENTIALS = credentials('jenkins_java_script_p1')
-        echo 'Hello environment'
-    }
-    stages {
-        satge('Build') {
+        
+        stage('Build') {
             steps {
-                sh 'docker build -t hasanussafa/jenkins_java_script_p1:latest .'
-                echo 'Hello Build'
+                sh '/usr/local/bin/docker build -t hasanussafa/jenkins_java_script_p1:latest .'
+                
             }
         }
-        satge('Login') {
+     
+        stage('Login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                echo 'Hello Login'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | /usr/local/bin/docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            
             }
         }
-       
-        satge('Push') {
+        
+        stage('Push') {
             steps {
-                sh 'docker push hasanussafa/jenkins_java_script_p1:latest'
-                echo 'Hello Push'
+                sh '/usr/local/bin/docker push hasanussafa/jenkins_java_script_p1:latest'
+                
             }
         }
+        
     }
     post {
         always {
-            sh 'docker logout'
-            echo 'Hello Logout'
+            sh '/usr/local/bin/docker logout'
+        
         }
     }
 }
