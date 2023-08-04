@@ -1,7 +1,7 @@
-FROM nginx:alpine
-COPY . /html
+FROM nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 #FROM alpine:3.18.2
-#WORKDIR index.html
+WORKDIR index.html
 #COPY . /index.html
-#RUN html index.html
+RUN html index.html
 #ENTRYPOINT [ "html", "index"]
